@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170518102845) do
+ActiveRecord::Schema.define(version: 20170518142821) do
+
+  create_table "access_points", force: :cascade do |t|
+    t.string "ssid", null: false
+    t.string "bssid", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bssid"], name: "index_access_points_on_bssid", unique: true
+  end
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
@@ -41,6 +49,15 @@ ActiveRecord::Schema.define(version: 20170518102845) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "pass", null: false
+    t.string "token", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_users_on_name", unique: true
   end
 
 end
