@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170518145949) do
+ActiveRecord::Schema.define(version: 20170518150522) do
 
   create_table "access_points", force: :cascade do |t|
     t.string "ssid", null: false
@@ -49,6 +49,15 @@ ActiveRecord::Schema.define(version: 20170518145949) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "checkins", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "access_point_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["access_point_id"], name: "index_checkins_on_access_point_id"
+    t.index ["user_id"], name: "index_checkins_on_user_id"
   end
 
   create_table "follows", force: :cascade do |t|
