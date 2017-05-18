@@ -26,20 +26,11 @@ module V1
       post do
         authenticate!
         ap = AccessPoint.find_or_create_by({ssid: params[:ssid], bssid: params[:bssid]})
-        ap.users << current_user unless ap.users.include? current_user
+        error!('Not follow: フォローしていません。', 401) unless ap.users.include? current_user
         status :created
-      end
+        checkin = ap.checkins.create(user: current_user)
 
-      desc 'DELETE /checkins'
-      params do
-        requires :ssid, type: String
-        requires :bssid, type: String
-      end
-      delete do
-        authenticate!
-        ap = AccessPoint.find_or_create_by({ssid: params[:ssid], bssid: params[:bssid]})
-        ap.users.delete(current_user) if ap.users.include? current_user
-        status :created
+        present checkin, with: Entity::CheckinEntity
       end
     end
 

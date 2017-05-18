@@ -27,7 +27,7 @@ module V1
         authenticate!
         ap = AccessPoint.find_or_create_by({ssid: params[:ssid], bssid: params[:bssid]})
         ap.users << current_user unless ap.users.include? current_user
-        status :created
+        present current_user.access_points, with: Entity::AccessPointEntity
       end
 
       desc 'DELETE /follows'
@@ -40,7 +40,7 @@ module V1
         ap = AccessPoint.find_or_create_by({ssid: params[:ssid], bssid: params[:bssid]})
         ap.users.delete(current_user) if ap.users.include? current_user
         status :created
-
+        present current_user.access_points, with: Entity::AccessPointEntity
       end
     end
 
