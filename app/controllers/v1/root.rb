@@ -5,5 +5,6 @@ module V1
     format :json
 
     mount V1::UsersController
+    mount V1::FollowsController
   end
 end
