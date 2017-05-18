@@ -9,12 +9,12 @@ module V1
       post do
         error!('Bad Request: ユーザ名はすでに取得されています。', 400) if User.find_by_name(params[:name])
         attributes = {
-            name: params[:name],
-            pass: params[:pass],
-            token: SecureRandom.hex(8)
+          name: params[:name],
+          pass: params[:pass],
+          token: SecureRandom.hex(8)
         }
         @user = User.create(attributes)
-        present @user
+        present @user, with: Entity::UserWithTokenEntity
       end
     end
   end
