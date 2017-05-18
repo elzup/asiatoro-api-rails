@@ -7,5 +7,6 @@ module V1
     mount V1::UsersController
     mount V1::FollowsController
     mount V1::CheckinsController
+    mount V1::AccessPointsController
   end
 end
