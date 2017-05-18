@@ -27,9 +27,20 @@ module V1
         authenticate!
         present @user, with: Entity::UserWithTokenEntity
         ap = AccessPoint.find_or_create_by({ssid: params[:ssid], bssid: params[:bssid]})
-        unless ap.users.include? current_user
-          ap.users << current_user
-        end
+        ap.users << current_user unless ap.users.include? current_user
+        status :created
+      end
+
+      desc 'DELETE /follows'
+      params do
+        requires :ssid, type: String
+        requires :bssid, type: String
+      end
+      delete do
+        authenticate!
+        present @user, with: Entity::UserWithTokenEntity
+        ap = AccessPoint.find_or_create_by({ssid: params[:ssid], bssid: params[:bssid]})
+        ap.users.delete(current_user) if ap.users.include? current_user
         status :created
       end
     end
