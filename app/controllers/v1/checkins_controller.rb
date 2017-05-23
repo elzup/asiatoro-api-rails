@@ -25,11 +25,20 @@ module V1
       end
       post do
         authenticate!
-        ap = AccessPoint.find_or_create_by({ssid: params[:ssid], bssid: params[:bssid]})
+        ap = AccessPoint.find_by_bssid(params[:bssid])
         error!('Not follow: フォローしていません。', 401) unless ap.users.include? current_user
+        checkin = ap.checkins.build(user: current_user)
+        try = 0
+        begin
+          checkin.save!
+        rescue
+          sleep 2
+          try += 1
+          if try < 10
+            retry
+          end
+        end
         status :created
-        checkin = ap.checkins.create(user: current_user)
-
         present checkin, with: Entity::CheckinEntity
       end
     end
