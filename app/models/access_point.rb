@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: access_points
+#
+#  id         :integer          not null, primary key
+#  ssid       :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 class AccessPoint < ApplicationRecord
   has_many :follows
   has_many :users, through: :follows
