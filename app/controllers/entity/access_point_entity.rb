@@ -1,6 +1,6 @@
 module Entity
   class AccessPointEntity < Grape::Entity
-    expose :id, :ssid, :bssid
+    expose :id, :ssid
     expose :last_checkins, using: Entity::CheckinEntity
   end
 end

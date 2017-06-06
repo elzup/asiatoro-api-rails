@@ -21,11 +21,10 @@ module V1
       desc 'POST /checkins'
       params do
         requires :ssid, type: String
-        requires :bssid, type: String
       end
       post do
         authenticate!
-        ap = AccessPoint.find_by_bssid(params[:bssid])
+        ap = AccessPoint.find_by_ssid(params[:ssid])
         error!('Not follow: フォローしていません。', 401) unless ap.users.include? current_user
         checkin = ap.checkins.build(user: current_user)
         try = 0

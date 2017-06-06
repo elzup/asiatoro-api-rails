@@ -14,10 +14,9 @@ ActiveRecord::Schema.define(version: 20170518150522) do
 
   create_table "access_points", force: :cascade do |t|
     t.string "ssid", null: false
-    t.string "bssid", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["bssid"], name: "index_access_points_on_bssid", unique: true
+    t.index ["ssid"], name: "index_access_points_on_ssid", unique: true
   end
 
   create_table "active_admin_comments", force: :cascade do |t|
