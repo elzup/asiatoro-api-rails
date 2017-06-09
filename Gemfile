@@ -78,3 +78,5 @@ gem 'grape-entity'
 gem 'kaminari'
 
 gem 'activeadmin', github: 'activeadmin'
+
+gem 'rspec'
