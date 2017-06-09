@@ -11,8 +11,8 @@
 #
 
 class User < ApplicationRecord
-  has_many :follows
+  has_many :follows, :dependent => :delete_all
   has_many :access_points, through: :follows
 
-  has_many :checkins
+  has_many :checkins, :dependent => :delete_all
 end
