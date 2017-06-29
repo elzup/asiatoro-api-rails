@@ -15,6 +15,20 @@ module V1
       def authenticate!
         error!('Unauthorized: 不正なユーザです。', 401) unless current_user
       end
+
+      def create_checkin(ap, user)
+        checkin = ap.checkins.build(user: user)
+        try = 0
+        begin
+          checkin.save!
+        rescue
+          sleep 2
+          try += 1
+          retry if try < 10
+          return nil
+        end
+        checkin
+      end
     end
 
     resource :checkins do
@@ -26,19 +40,24 @@ module V1
         authenticate!
         ap = AccessPoint.find_by_ssid(params[:ssid])
         error!('Not follow: フォローしていません。', 401) unless ap.users.include? current_user
-        checkin = ap.checkins.build(user: current_user)
-        try = 0
-        begin
-          checkin.save!
-        rescue
-          sleep 2
-          try += 1
-          if try < 10
-            retry
-          end
-        end
+        checkin = create_checkin(ap, current_user)
+        error!('Any error: チェックインできません。', 500) unless checkin
         status :created
         present checkin, with: Entity::CheckinEntity
+      end
+
+      desc 'POST /checkins'
+      params do
+        requires :ssids, type: Array[String]
+      end
+      post 'balk' do
+        authenticate!
+        aps = params[:ssids].map { |ap| AccessPoint.find_by_ssid(ap) }
+        error!('Not found: アクセスポイントが見つかりません。', 404) if aps.include?(nil)
+        error!('Not follow: フォローしていません。', 401) if aps.any? { |ap| !ap.users.include? current_user }
+        checkins = aps.map { |ap| create_checkin(ap, current_user) }
+        error!('Any error: チェックインできません。', 500) if checkins.include?(nil)
+        status :created
       end
     end
 
