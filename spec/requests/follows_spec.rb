@@ -21,6 +21,7 @@ describe 'GET /v1/follows' do
     before do
       @ssid = 'トキワシティ'
       bob = User.create(name: 'Bob', pass: 'pass', token: 'token')
+      bob.access_points << AccessPoint.create(ssid: @ssid)
       delete_with_token('/v1/follows', { ssid: @ssid }, {}, bob)
       @ap = AccessPoint.find_by_ssid(@ssid)
     end
