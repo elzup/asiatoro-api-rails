@@ -21,6 +21,10 @@ describe 'GET /v1/users' do
       expect(json['pass']).to be_nil
     end
 
+    it '重複エラー' do
+      post '/v1/users', params: { name: @name, pass: 'hogehoge' }
+      expect(response.status).to eq(400)
+    end
   end
 
 end
