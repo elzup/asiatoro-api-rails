@@ -15,4 +15,9 @@ module RequestsHelper
     put path, params: params[:params] || params, headers: headers
   end
 
+  def delete_with_token(path, params={}, headers={}, user=nil)
+    headers.merge!('HTTP_AUTHORIZATION' => retrieve_access_token(user))
+    delete path, params: params[:params] || params, headers: headers
+  end
+
 end
