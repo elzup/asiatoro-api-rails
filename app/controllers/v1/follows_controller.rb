@@ -26,6 +26,7 @@ module V1
         authenticate!
         ap = AccessPoint.find_or_create_by({ssid: params[:ssid]})
         ap.users << current_user unless ap.users.include? current_user
+        status :created
         present current_user.access_points, with: Entity::AccessPointEntity
       end
 
@@ -37,7 +38,6 @@ module V1
         authenticate!
         ap = AccessPoint.find_or_create_by({ssid: params[:ssid]})
         ap.users.delete(current_user) if ap.users.include? current_user
-        status :created
         present current_user.access_points, with: Entity::AccessPointEntity
       end
     end

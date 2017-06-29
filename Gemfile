@@ -50,6 +50,8 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'pry-rails'
   gem 'bullet'
+  gem 'rspec-rails'
+  gem 'database_cleaner'
 end
 
 group :development do
@@ -78,5 +80,3 @@ gem 'grape-entity'
 gem 'kaminari'
 
 gem 'activeadmin', github: 'activeadmin'
-
-gem 'rspec'
