@@ -14,6 +14,8 @@ describe 'GET /v1/access_points' do
       @user.checkins << Checkin.create(access_point: @ap2)
       @user.checkins << Checkin.create(access_point: @ap3)
       @user2.checkins << Checkin.create(access_point: @ap1)
+      @user2.checkins << Checkin.create(access_point: @ap3, created_at: 5.days.ago)
+      @user2.checkins << Checkin.create(access_point: @ap3, created_at: 6.days.ago)
       get_with_token('/v1/access_points', {}, {}, @user)
     end
 
@@ -28,6 +30,12 @@ describe 'GET /v1/access_points' do
       expect(checkins[1]['ssid']).to eq(@ap2.ssid)
       expect(checkins[0]['last_checkins'].size).to eq(2)
       expect(checkins[2]['last_checkins'].size).to eq(2)
+    end
+
+    it 'Today checkins' do
+      checkins = JSON.parse(response.body)
+      expect(checkins[2]['today_checkins'].size).to eq(@user.id)
+      expect(checkins[2]['today_checkins'][0]['user']['id']).to eq(@user.id)
     end
   end
 

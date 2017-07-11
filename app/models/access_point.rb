@@ -16,6 +16,10 @@ class AccessPoint < ApplicationRecord
 
   def last_checkins
     # TODO: Eager Loading
-    users.map { |u| checkins.where(user: u).order('created_at DESC').limit(1).first }
+    users.map { |u| checkins.where(user: u).order_new.limit(1).first }
+  end
+
+  def today_checkins
+    checkins.where_today.order_new
   end
 end
