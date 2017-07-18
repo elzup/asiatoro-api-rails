@@ -52,6 +52,8 @@ group :development, :test do
   gem 'bullet'
   gem 'rspec-rails'
   gem 'database_cleaner'
+
+  gem 'rails-erd'
 end
 
 group :development do
