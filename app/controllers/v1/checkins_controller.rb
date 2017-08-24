@@ -1,5 +1,5 @@
 module V1
-  class CheckinsController < Grape::API
+  class CheckinsController < Grape::API helpers do
     helpers do
       def current_user
         return @current_user if @current_user
@@ -27,9 +27,17 @@ module V1
           retry if try < 10
           return nil
         end
+        topic = "#{user.id}.#{ap.id}"
+        fcmPushTopic(topic)
         checkin
       end
+
+      def fcmPushTopic(topic)
+        fcm = FCM.new(Rails.application.secrets.fcm_key)
+        fcm.send_with_notification_key(topic)
+      end
     end
+
 
     resource :checkins do
       desc 'POST /checkins'
@@ -52,14 +60,14 @@ module V1
       end
       post 'balk' do
         authenticate!
-        aps = params[:ssids].map { |ap| AccessPoint.find_by_ssid(ap) }
+        aps = params[:ssids].map {|ap| AccessPoint.find_by_ssid(ap)}
         error!('Not found: アクセスポイントが見つかりません。', 404) if aps.include?(nil)
-        error!('Not follow: フォローしていません。', 401) if aps.any? { |ap| !ap.users.include? current_user }
-        checkins = aps.map { |ap| create_checkin(ap, current_user) }
+        error!('Not follow: フォローしていません。', 401) if aps.any? {|ap| !ap.users.include? current_user}
+        checkins = aps.map {|ap| create_checkin(ap, current_user)}
         error!('Any error: チェックインできません。', 500) if checkins.include?(nil)
         status :created
       end
     end
 
   end
-end
+  end
