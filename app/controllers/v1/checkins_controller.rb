@@ -1,5 +1,5 @@
 module V1
-  class CheckinsController < Grape::API helpers do
+  class CheckinsController < Grape::API
     helpers do
       def current_user
         return @current_user if @current_user
@@ -68,6 +68,5 @@ module V1
         status :created
       end
     end
-
   end
-  end
+end
