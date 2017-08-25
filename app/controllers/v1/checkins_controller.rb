@@ -28,13 +28,14 @@ module V1
           return nil
         end
         topic = "#{user.id}.#{ap.id}"
+        p topic
         fcmPushTopic(topic)
         checkin
       end
 
       def fcmPushTopic(topic)
-        fcm = FCM.new(Rails.application.secrets.fcm_key)
-        fcm.send_with_notification_key(topic)
+        @fcm ||= FCM.new(Rails.application.secrets.fcm_key)
+        @fcm.send_with_notification_key(topic)
       end
     end
 
@@ -54,7 +55,7 @@ module V1
         present checkin, with: Entity::CheckinEntity
       end
 
-      desc 'POST /checkins'
+      desc 'POST /checkins/balk'
       params do
         requires :ssids, type: Array[String]
       end
