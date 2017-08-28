@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170518150522) do
+ActiveRecord::Schema.define(version: 20170828171404) do
 
   create_table "access_points", force: :cascade do |t|
     t.string "ssid", null: false
@@ -76,6 +76,17 @@ ActiveRecord::Schema.define(version: 20170518150522) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_users_on_name", unique: true
+  end
+
+  create_table "watches", force: :cascade do |t|
+    t.integer "source_id"
+    t.integer "target_id"
+    t.integer "access_point_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["access_point_id"], name: "index_watches_on_access_point_id"
+    t.index ["source_id"], name: "index_watches_on_source_id"
+    t.index ["target_id"], name: "index_watches_on_target_id"
   end
 
 end
