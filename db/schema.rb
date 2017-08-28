@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170828171404) do
+ActiveRecord::Schema.define(version: 20170828183220) do
 
   create_table "access_points", force: :cascade do |t|
     t.string "ssid", null: false
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 20170828171404) do
     t.string "token", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "fcm_token"
     t.index ["name"], name: "index_users_on_name", unique: true
   end
 
