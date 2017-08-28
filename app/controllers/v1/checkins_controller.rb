@@ -28,14 +28,18 @@ module V1
           return nil
         end
         topic = "#{user.id}.#{ap.id}"
-        p topic
-        fcmPushTopic(topic)
+        data = {message: "#{user.name}さんが「#{ap.ssid}」にチェックインしました！"}
+        fcmPushTopic(topic, data)
         checkin
       end
 
-      def fcmPushTopic(topic)
+      def fcmPushTopic(topic, data)
+        p topic
+        p data[:message]
+        p Rails.application.secrets.fcm_key
         @fcm ||= FCM.new(Rails.application.secrets.fcm_key)
-        @fcm.send_with_notification_key(topic)
+        @fcm.send_with_notification_key(topic, data: data)
+
       end
     end
 
