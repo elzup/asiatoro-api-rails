@@ -27,22 +27,15 @@ module V1
           retry if try < 10
           return nil
         end
-        topic = "#{user.id}.#{ap.id}"
-        data = {message: "#{user.name}さんが「#{ap.ssid}」にチェックインしました！"}
-        fcmPushTopic(topic, data)
+        tokens = Watch.where(target: user, access_point: ap).each {|watch| watch.source.fcm_token}
+        unless tokens.empty?
+          user.readers.where()
+          data = {message: "#{user.name}さんが「#{ap.ssid}」にチェックインしました！"}
+          fcm.send(tokens, data)
+        end
         checkin
       end
-
-      def fcmPushTopic(topic, data)
-        p topic
-        p data[:message]
-        p Rails.application.secrets.fcm_key
-        @fcm ||= FCM.new(Rails.application.secrets.fcm_key)
-        @fcm.send_with_notification_key(topic, data: data)
-
-      end
     end
-
 
     resource :checkins do
       desc 'POST /checkins'
