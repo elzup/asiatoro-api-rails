@@ -36,12 +36,18 @@ module V1
 
       desc 'PUT /users'
       params do
-        requires :name, type: String
+        optional :name, type: String
+        optional :fcm_token, type: String
       end
       put do
         authenticate!
-        error!('Bad Request: ユーザ名はすでに取得されています。', 400) if User.find_by_name(params[:name])
-        current_user.update(name: params[:name])
+        unless params[:name].nil?
+          error!('Bad Request: ユーザ名はすでに取得されています。', 400) if User.find_by_name(params[:name])
+          current_user.update(name: params[:name])
+        end
+        unless params[:fcm_token].nil?
+          current_user.update(fcm_token: params[:fcm_token])
+        end
         status 201
         present current_user, with: Entity::UserWithTokenEntity
       end
