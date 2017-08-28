@@ -13,6 +13,6 @@ class Checkin < ApplicationRecord
   belongs_to :user
   belongs_to :access_point
 
-  scope :order_new, -> { order('created_at DESC') }
-  scope :where_today, -> { where('created_at >= ?', Time.zone.now.beginning_of_day) }
+  scope :order_new, -> {order('created_at DESC')}
+  scope :where_today, -> {where('created_at >= ?', Time.now.beginning_of_day)}
 end
