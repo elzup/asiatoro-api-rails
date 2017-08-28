@@ -13,6 +13,8 @@
 class User < ApplicationRecord
   has_many :follows, :dependent => :delete_all
   has_many :access_points, through: :follows
+  has_many :watches, class_name: 'Watch', primary_key: 'id', foreign_key: 'source_id'
+  has_many :readers, class_name: 'Watch', primary_key: 'id', foreign_key: 'target_id'
 
   has_many :checkins, :dependent => :delete_all
 end
