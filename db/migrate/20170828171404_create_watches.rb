@@ -1,8 +1,8 @@
 class CreateWatches < ActiveRecord::Migration[5.1]
   def change
     create_table :watches do |t|
-      t.references :source, foreign_key: true
-      t.references :target, foreign_key: true
+      t.integer :source_id, foreign_key: true
+      t.integer :target_id, foreign_key: true
       t.references :access_point, foreign_key: true
 
       t.timestamps

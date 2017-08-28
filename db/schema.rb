@@ -86,8 +86,6 @@ ActiveRecord::Schema.define(version: 20170828183220) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["access_point_id"], name: "index_watches_on_access_point_id"
-    t.index ["source_id"], name: "index_watches_on_source_id"
-    t.index ["target_id"], name: "index_watches_on_target_id"
   end
 
 end
