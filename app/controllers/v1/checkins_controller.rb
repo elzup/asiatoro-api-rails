@@ -28,10 +28,12 @@ module V1
           return nil
         end
         tokens = Watch.where(target: user, access_point: ap).each {|watch| watch.source.fcm_token}
+        p tokens
         unless tokens.empty?
           user.readers.where()
           data = {message: "#{user.name}さんが「#{ap.ssid}」にチェックインしました！"}
-          fcm.send(tokens, data)
+          @fcm ||= FCM.new(Rails.application.secrets.fcm_key)
+          @fcm.send(tokens, data)
         end
         checkin
       end
